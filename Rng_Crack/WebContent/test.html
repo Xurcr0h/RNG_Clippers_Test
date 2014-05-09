@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="test.js"></script>
+
+<script type="text/javascript"
+	src="other_libraries/MochiKit/MochiKit.js"></script>
+<script type='text/javascript' src='other_libraries/JSON/json2.js'></script>
+
+<script type='text/javascript' src='js/Clipperz/YUI/Utils.js'></script>
+<script type='text/javascript' src='js/Clipperz/Base.js'></script>
+<script type='text/javascript' src='js/Clipperz/ByteArray.js'></script>
+<script type='text/javascript' src='js/Clipperz/Async.js'></script>
+<script type='text/javascript' src='js/Clipperz/Logging.js'></script>
+
+<script type='text/javascript' src='js/Clipperz/Crypto/SHA.js'></script>
+<script type='text/javascript' src='js/Clipperz/Crypto/AES.js'></script>
+<script type='text/javascript' src='js/Clipperz/Crypto/PRNG.js'></script>
+</head>
+<body>
+	<script type="text/javascript">
+			var prng = Clipperz.Crypto.PRNG.defaultRandomGenerator();
+		function dump() {
+			//prng.dump(this.Document);
+			//var prng = Clipperz.Crypto.PRNG.defaultRandomGenerator();
+			//
+			alert("Is ready?:"+prng.isReadyToGenerateRandomValues());
+		}
+		function Block(){
+			alert(prng.getRandomBlock()._value[0])
+		}
+		function reseed(){
+			alert(prng.reseedCounter());
+		}
+	</script>
+	<button onclick="dump();">Test if ready</button> <br>
+	<button onclick = "Block();">Give me block</button> <br>
+	<button onclick = "reseed();">Ressed counter</button>
+	<!--  <button onclick="alert();">Is Ready?</button>-->
+</body>
+</html>
