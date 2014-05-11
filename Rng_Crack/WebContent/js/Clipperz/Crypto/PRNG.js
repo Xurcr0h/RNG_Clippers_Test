@@ -18,7 +18,8 @@ refer to https://clipperz.is
   If not, see <http://www.gnu.org/licenses/>.
 
 */
-
+var reseedCounterbyTime = 0;
+var reseedCounterbyMouse = 0;
 
 try { if (typeof(Clipperz.ByteArray) == 'undefined') { throw ""; }} catch (e) {
 	throw "Clipperz.Crypto.PRNG depends on Clipperz.ByteArray!";
@@ -177,12 +178,18 @@ Clipperz.Crypto.PRNG.TimeRandomnessSource.prototype = MochiKit.Base.update(new C
 		var	now;
 		var	entropyByte;
 		var intervalTime;
+		var tmp;
 		now = new Date();
 		entropyByte = (now.getTime() & 0xff);
-		
+		reseedCounterbyTime += 1;
 		intervalTime = this.intervalTime();
 		if (this.boostMode() == true) {
 			intervalTime = intervalTime / 9;
+		}
+		
+		if(document.getElementById("reseedByTime")!=null){
+			document.getElementById("reseedByTime").innerHTML=entropyByte.toString();
+			document.getElementById("reseedByTimeCounter").innerHTML =  reseedCounterbyTime.toString();
 		}
 		
 		this.updateGeneratorWithValue(entropyByte);
@@ -273,11 +280,17 @@ Clipperz.Crypto.PRNG.MouseRandomnessSource.prototype = MochiKit.Base.update(new 
 		var mouseLocation;
 		var randomBit;
 		var mask;
+		reseedCounterbyMouse +=1;
+
 		
 		mask = 0xffffffff >>> (32 - this.numberOfBitsToCollectAtEachEvent());
 		
 		mouseLocation = anEvent.mouse().client;
 		randomBit = ((mouseLocation.x ^ mouseLocation.y) & mask);
+		if(document.getElementById("reseedByMouse")!=null){
+			document.getElementById("reseedByMouse").innerHTML=randomBit.toString();
+			document.getElementById("reseedByMouseCounter").innerHTML=reseedCounterbyMouse.toString();
+		}
 		this.appendRandomBitsToRandomBitsCollector(randomBit)
 	},
 	
@@ -389,6 +402,8 @@ Clipperz.Crypto.PRNG.Fortuna = function(args) {
 	args = args || {};
 
 	this._key = args.seed || null;
+	
+	
 	if (this._key == null) {
 		this._counter = 0;
 		this._key = new Clipperz.ByteArray();
@@ -422,6 +437,9 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 	//-------------------------------------------------------------------------
 
 	'key': function() {
+	if (this._key != null && document.getElementById("usedSeed")!=null){
+		document.getElementById("usedSeed").innerHTML=this._key._value.join();
+	}
 		return this._key;
 	},
 
@@ -449,6 +467,9 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 	//-------------------------------------------------------------------------
 
 	'reseedCounter': function() {
+	if (this._key != null && document.getElementById("usedSeed")!=null){
+		document.getElementById("usedSeed").innerHTML=this._key._value.join();
+	}
 		return this._reseedCounter;
 	},
 

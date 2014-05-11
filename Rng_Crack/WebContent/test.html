@@ -21,23 +21,58 @@
 </head>
 <body>
 	<script type="text/javascript">
-			var prng = Clipperz.Crypto.PRNG.defaultRandomGenerator();
-		function dump() {
-			//prng.dump(this.Document);
-			//var prng = Clipperz.Crypto.PRNG.defaultRandomGenerator();
-			//
-			alert("Is ready?:"+prng.isReadyToGenerateRandomValues());
-		}
-		function Block(){
-			alert(prng.getRandomBlock()._value[0])
-		}
-		function reseed(){
-			alert(prng.reseedCounter());
-		}
-	</script>
-	<button onclick="dump();">Test if ready</button> <br>
-	<button onclick = "Block();">Give me block</button> <br>
-	<button onclick = "reseed();">Ressed counter</button>
-	<!--  <button onclick="alert();">Is Ready?</button>-->
+	var prng = Clipperz.Crypto.PRNG.defaultRandomGenerator();
+</script>
+	<table>
+		<thead>
+			<tr>
+				<th>Function</th>
+				<th>Value</th>
+				<th>Button</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Is Ready?</td>
+				<td id="isReady"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>ReseedCounter</td>
+				<td id="reseedCounter"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Reseed by Time - Counter</td>
+				<td id="reseedByTimeCounter"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Reseed by Time - Value</td>
+				<td id="reseedByTime"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Reseed by Mouse - Counter</td>
+				<td id="reseedByMouseCounter"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Reseed by Mouse - Value</td>
+				<td id="reseedByMouse"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Used seed</td>
+				<td id="usedSeed"></td>
+				<td><button onclick="prng.reseed()">Reseed!</button></td>
+			</tr>
+			<tr>
+				<td>Random Value</td>
+				<td id="randomOutput"></td>
+				<td><button onclick="genRandom();">Generate</button></td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>
