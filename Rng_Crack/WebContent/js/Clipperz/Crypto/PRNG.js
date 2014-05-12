@@ -183,13 +183,15 @@ Clipperz.Crypto.PRNG.TimeRandomnessSource.prototype = MochiKit.Base.update(new C
 		entropyByte = (now.getTime() & 0xff);
 		reseedCounterbyTime += 1;
 		intervalTime = this.intervalTime();
-		if (this.boostMode() == true) {
-			intervalTime = intervalTime / 9;
-		}
+//		if (this.boostMode() == true) {
+//			intervalTime = intervalTime / 9;
+//		}
 		
 		if(document.getElementById("reseedByTime")!=null){
 			document.getElementById("reseedByTime").innerHTML=entropyByte.toString();
 			document.getElementById("reseedByTimeCounter").innerHTML =  reseedCounterbyTime.toString();
+			var tmp =document.getElementById("Entrophytest").innerHTML;
+			document.getElementById("Entrophytest").innerHTML =  tmp +","+ entropyByte.toString();
 		}
 		
 		this.updateGeneratorWithValue(entropyByte);
@@ -418,6 +420,7 @@ Clipperz.Crypto.PRNG.Fortuna = function(args) {
 	
 	this._accumulators = [];
 	c = this.numberOfEntropyAccumulators();
+	c=1;
 	for (i=0; i<c; i++) {
 		this._accumulators.push(new Clipperz.Crypto.PRNG.EntropyAccumulator());
 	}
@@ -490,9 +493,12 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 		reseedCounter = this.reseedCounter();
 		
 		c = this.numberOfEntropyAccumulators();
+		
 		reseedCounterMask = 0xffffffff >>> (32 - c);
+		c=1;
 		for (i=0; i<c; i++) {
 			if ((i == 0) || ((reseedCounter & (reseedCounterMask >>> (c - i))) == 0)) {
+				
 				newKeySeed.appendBlock(this.accumulators()[i].stack());
 				this.accumulators()[i].resetStack();
 			} 
@@ -589,8 +595,8 @@ MochiKit.Logging.logWarning("Fortuna generator has not enough entropy, yet!");
 
 	'addRandomByte': function(aSourceId, aPoolId, aRandomValue) {
 		var	selectedAccumulator;
-
-		selectedAccumulator = this.accumulators()[aPoolId];
+		selectedAccumulator = this.accumulators()[0];
+		//selectedAccumulator = this.accumulators()[aPoolId];
 		selectedAccumulator.addRandomByte(aRandomValue);
 
 		if (aPoolId == 0) {
@@ -826,8 +832,8 @@ Clipperz.Crypto.PRNG.defaultRandomGenerator = function() {
 		//.............................................................
 		{
 			var newRandomnessSource;
-		
-			newRandomnessSource = new Clipperz.Crypto.PRNG.TimeRandomnessSource({intervalTime:111});
+			//newRandomnessSource = new Clipperz.Crypto.PRNG.TimeRandomnessSource({intervalTime:111});
+			newRandomnessSource = new Clipperz.Crypto.PRNG.TimeRandomnessSource({intervalTime:100});
 			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
 		}
 
@@ -836,12 +842,12 @@ Clipperz.Crypto.PRNG.defaultRandomGenerator = function() {
 		//		MouseRandomnessSource
 		//
 		//.............................................................
-		{
-			var	newRandomnessSource;
-			
-			newRandomnessSource = new Clipperz.Crypto.PRNG.MouseRandomnessSource();
-			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
-		}
+//		{
+//			var	newRandomnessSource;
+//			
+//			newRandomnessSource = new Clipperz.Crypto.PRNG.MouseRandomnessSource();
+//			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
+//		}
 
 		//.............................................................
 		//
@@ -849,10 +855,10 @@ Clipperz.Crypto.PRNG.defaultRandomGenerator = function() {
 		//
 		//.............................................................
 		{
-			var	newRandomnessSource;
-			
-			newRandomnessSource = new Clipperz.Crypto.PRNG.KeyboardRandomnessSource();
-			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
+//			var	newRandomnessSource;
+//			
+//			newRandomnessSource = new Clipperz.Crypto.PRNG.KeyboardRandomnessSource();
+//			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
 		}
 
 	}

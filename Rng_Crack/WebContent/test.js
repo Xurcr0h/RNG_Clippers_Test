@@ -17,6 +17,11 @@ function genRandom() {
 	
 	
 }
+function getEntrophyLevel(){
+	
+	document.getElementById("EntrophyLevel").innerHTML = prng.entropyLevel().toString();
+	}
+
 function checkReseedCounter() {
 	document.getElementById("reseedCounter").innerHTML = prng.reseedCounter(); 
 }
@@ -24,4 +29,5 @@ function checkReseedCounter() {
 function updateTable() {
 	CheckIfReady();
 	checkReseedCounter();
+	getEntrophyLevel();
 }
