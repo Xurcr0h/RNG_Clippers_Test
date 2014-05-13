@@ -420,7 +420,6 @@ Clipperz.Crypto.PRNG.Fortuna = function(args) {
 	
 	this._accumulators = [];
 	c = this.numberOfEntropyAccumulators();
-	c=1;
 	for (i=0; i<c; i++) {
 		this._accumulators.push(new Clipperz.Crypto.PRNG.EntropyAccumulator());
 	}
@@ -495,7 +494,7 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 		c = this.numberOfEntropyAccumulators();
 		
 		reseedCounterMask = 0xffffffff >>> (32 - c);
-		c=1;
+		
 		for (i=0; i<c; i++) {
 			if ((i == 0) || ((reseedCounter & (reseedCounterMask >>> (c - i))) == 0)) {
 				
@@ -595,8 +594,8 @@ MochiKit.Logging.logWarning("Fortuna generator has not enough entropy, yet!");
 
 	'addRandomByte': function(aSourceId, aPoolId, aRandomValue) {
 		var	selectedAccumulator;
-		selectedAccumulator = this.accumulators()[0];
-		//selectedAccumulator = this.accumulators()[aPoolId];
+		//selectedAccumulator = this.accumulators()[0];
+		selectedAccumulator = this.accumulators()[aPoolId];
 		selectedAccumulator.addRandomByte(aRandomValue);
 
 		if (aPoolId == 0) {
@@ -842,12 +841,12 @@ Clipperz.Crypto.PRNG.defaultRandomGenerator = function() {
 		//		MouseRandomnessSource
 		//
 		//.............................................................
-//		{
-//			var	newRandomnessSource;
-//			
-//			newRandomnessSource = new Clipperz.Crypto.PRNG.MouseRandomnessSource();
-//			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
-//		}
+		{
+			var	newRandomnessSource;
+			
+			newRandomnessSource = new Clipperz.Crypto.PRNG.MouseRandomnessSource();
+			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
+		}
 
 		//.............................................................
 		//
@@ -855,10 +854,10 @@ Clipperz.Crypto.PRNG.defaultRandomGenerator = function() {
 		//
 		//.............................................................
 		{
-//			var	newRandomnessSource;
-//			
-//			newRandomnessSource = new Clipperz.Crypto.PRNG.KeyboardRandomnessSource();
-//			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
+			var	newRandomnessSource;
+			
+			newRandomnessSource = new Clipperz.Crypto.PRNG.KeyboardRandomnessSource();
+			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
 		}
 
 	}
