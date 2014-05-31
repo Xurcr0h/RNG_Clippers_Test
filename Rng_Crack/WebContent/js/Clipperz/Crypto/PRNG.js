@@ -524,7 +524,7 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 //MochiKit.Logging.logDebug("### PRNG.readyToGenerateRandomBytes");
 Clipperz.log("### PRNG.readyToGenerateRandomBytes");
 			MochiKit.Signal.signal(this, 'readyToGenerateRandomBytes');
-			//document.getElementById("Valuesusedtoseed").innerHTML=newKeySeed.asString();
+			document.getElementById("Valuesusedtoseed").innerHTML=newKeySeed._value.join();
 			Clipperz.log(newKeySeed);
 		}
 		MochiKit.Signal.signal(this, 'reseeded');
