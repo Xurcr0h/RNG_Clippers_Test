@@ -3,12 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="test.js"></script>
+
 
 <script type="text/javascript"
 	src="other_libraries/MochiKit/MochiKit.js"></script>
 <script type='text/javascript' src='other_libraries/JSON/json2.js'></script>
 
+<script type='text/javascript' src='other_libraries/jquerry/jquery-2.1.1.min.js'></script>
+<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.js"></script>
 <script type='text/javascript' src='js/Clipperz/YUI/Utils.js'></script>
 <script type='text/javascript' src='js/Clipperz/Base.js'></script>
 <script type='text/javascript' src='js/Clipperz/ByteArray.js'></script>
@@ -18,11 +21,10 @@
 <script type='text/javascript' src='js/Clipperz/Crypto/SHA.js'></script>
 <script type='text/javascript' src='js/Clipperz/Crypto/AES.js'></script>
 <script type='text/javascript' src='js/Clipperz/Crypto/PRNG.js'></script>
+<script type="text/javascript" src="test.js"></script>
 </head>
 <body>
-	<script type="text/javascript">
-	var prng = Clipperz.Crypto.PRNG.defaultRandomGenerator();
-</script>
+
 	<table>
 		<thead>
 			<tr>
@@ -32,9 +34,20 @@
 			</tr>
 		</thead>
 		<tbody>
+		
+			
 			<tr>
 				<td>Is Ready?</td>
 				<td id="isReady"></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Used Array to seed</td>
+				<td><textarea rows="1" cols="20" id="Valuesusedtoseed"></textarea> </td>
+			</tr>
+			<tr>
+				<td>Stack length</td>
+				<td id="stack"></td>
 				<td></td>
 			</tr>
 			<tr>
@@ -42,6 +55,14 @@
 				<td id="reseedCounter"></td>
 				<td></td>
 			</tr>
+			<tr>
+				<td>StartTime</td>
+				<td id="startTime"></td>
+				<td></td>
+			</tr>
+			<script type="text/Javascript">
+			now=new Date();
+			document.getElementById("startTime").innerHTML=(now.getTime() & 0xff).toString();</script>
 			<tr>
 				<td>Reseed by Time - Counter</td>
 				<td id="reseedByTimeCounter"></td>
@@ -51,6 +72,15 @@
 				<td>Reseed by Time - Value</td>
 				<td id="reseedByTime"></td>
 				<td></td>
+			</tr>
+			<tr>
+				<td>Mouse numberOfBitsToCollectAtEachEvent</td>
+				<td id="numberOfBitsToCollectAtEachEvent"></td>
+				<td><button  onclick="trigger();">trigger mousemove</button></td>
+			</tr>
+			<tr>
+				<td>Mouse Mask</td>
+				<td id="mask"></td>
 			</tr>
 			<tr>
 				<td>Reseed by Mouse - Counter</td>
@@ -64,7 +94,7 @@
 			</tr>
 			<tr>
 				<td>Used seed</td>
-				<td id="usedSeed"></td>
+				<td><textarea rows="1" cols="20" id="usedSeed"></textarea></td>
 				<td><button onclick="prng.reseed()">Reseed!</button></td>
 			</tr>
 			<tr>
@@ -79,10 +109,15 @@
 			</tr>
 			<tr>
 				<td>Entrophy Test</td>
-				<td ><textarea rows="1000" cols="300" id="Entrophytest"></textarea></td>
+				<td ><textarea rows="200" cols="50" id="Entrophytest"></textarea></td>
 				<td></td>
 			</tr>
 		</tbody>
 	</table>
+		<script type="text/javascript">
+	var prng = Clipperz.Crypto.PRNG.defaultRandomGenerator();
+	Clipperz.log((new Date().getTime() & 0xff).toString());
+	trigger();
+</script>
 </body>
 </html>

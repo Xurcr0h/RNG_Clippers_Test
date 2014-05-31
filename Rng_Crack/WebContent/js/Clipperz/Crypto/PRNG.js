@@ -39,7 +39,7 @@ if (typeof(Clipperz.Crypto.PRNG) == 'undefined') { Clipperz.Crypto.PRNG = {}; }
 
 Clipperz.Crypto.PRNG.EntropyAccumulator = function(args) {
 	args = args || {};
-//	MochiKit.Base.bindMethods(this);
+	MochiKit.Base.bindMethods(this);
 
 	this._stack = new Clipperz.ByteArray();
 	this._maxStackLengthBeforeHashing = args.maxStackLengthBeforeHashing || 256;
@@ -74,7 +74,7 @@ Clipperz.Crypto.PRNG.EntropyAccumulator.prototype = MochiKit.Base.update(null, {
 
 	'addRandomByte': function(aValue) {
 		this.stack().appendByte(aValue);
-				
+		//document.getElementById("stack").innerHTML=this.stack().length().toString();
 		if (this.stack().length() > this.maxStackLengthBeforeHashing()) {
 			this.setStack(Clipperz.Crypto.SHA.sha_d256(this.stack()));
 		}
@@ -181,20 +181,25 @@ Clipperz.Crypto.PRNG.TimeRandomnessSource.prototype = MochiKit.Base.update(new C
 		var tmp;
 		now = new Date();
 		entropyByte = (now.getTime() & 0xff);
+		//entropyByte=1;
 		reseedCounterbyTime += 1;
 		intervalTime = this.intervalTime();
-//		if (this.boostMode() == true) {
-//			intervalTime = intervalTime / 9;
-//		}
+		if (this.boostMode() == true) {
+		
+			intervalTime = intervalTime / 9;
+		}
 		
 		if(document.getElementById("reseedByTime")!=null){
 			document.getElementById("reseedByTime").innerHTML=entropyByte.toString();
 			document.getElementById("reseedByTimeCounter").innerHTML =  reseedCounterbyTime.toString();
 			var tmp =document.getElementById("Entrophytest").innerHTML;
+			//if(tmp.split(",").length < 10000)
+			if(this.boostMode() == true)
 			document.getElementById("Entrophytest").innerHTML =  tmp +","+ entropyByte.toString();
 		}
 		
 		this.updateGeneratorWithValue(entropyByte);
+		//this.updateGeneratorWithValue(0);
 		setTimeout(this.collectEntropy, intervalTime);
 	},
 	
@@ -258,7 +263,8 @@ Clipperz.Crypto.PRNG.MouseRandomnessSource.prototype = MochiKit.Base.update(new 
 		numberOfRandomBitsCollected += this.numberOfBitsToCollectAtEachEvent();
 		
 		if (numberOfRandomBitsCollected == 8) {
-			this.updateGeneratorWithValue(collectetBits);
+			//this.updateGeneratorWithValue(collectetBits);
+			this.updateGeneratorWithValue(0);
 			numberOfRandomBitsCollected = 0;
 			this.setRandomBitsCollector(0);
 		}
@@ -286,9 +292,11 @@ Clipperz.Crypto.PRNG.MouseRandomnessSource.prototype = MochiKit.Base.update(new 
 
 		
 		mask = 0xffffffff >>> (32 - this.numberOfBitsToCollectAtEachEvent());
-		
+		//document.getElementById("numberOfBitsToCollectAtEachEvent").innerHTML=this.numberOfBitsToCollectAtEachEvent().toString();
+		//document.getElementById("mask").innerHTML=mask.toString();
 		mouseLocation = anEvent.mouse().client;
 		randomBit = ((mouseLocation.x ^ mouseLocation.y) & mask);
+		
 		if(document.getElementById("reseedByMouse")!=null){
 			document.getElementById("reseedByMouse").innerHTML=randomBit.toString();
 			document.getElementById("reseedByMouseCounter").innerHTML=reseedCounterbyMouse.toString();
@@ -497,7 +505,8 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 		
 		for (i=0; i<c; i++) {
 			if ((i == 0) || ((reseedCounter & (reseedCounterMask >>> (c - i))) == 0)) {
-				
+				Clipperz.log("Stacks to reset and add:");
+				Clipperz.log(i);
 				newKeySeed.appendBlock(this.accumulators()[i].stack());
 				this.accumulators()[i].resetStack();
 			} 
@@ -515,6 +524,8 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 //MochiKit.Logging.logDebug("### PRNG.readyToGenerateRandomBytes");
 Clipperz.log("### PRNG.readyToGenerateRandomBytes");
 			MochiKit.Signal.signal(this, 'readyToGenerateRandomBytes');
+			//document.getElementById("Valuesusedtoseed").innerHTML=newKeySeed.asString();
+			Clipperz.log(newKeySeed);
 		}
 		MochiKit.Signal.signal(this, 'reseeded');
 	},
@@ -597,13 +608,13 @@ MochiKit.Logging.logWarning("Fortuna generator has not enough entropy, yet!");
 		//selectedAccumulator = this.accumulators()[0];
 		selectedAccumulator = this.accumulators()[aPoolId];
 		selectedAccumulator.addRandomByte(aRandomValue);
-
 		if (aPoolId == 0) {
 			MochiKit.Signal.signal(this, 'addedRandomByte')
 			if (selectedAccumulator.stack().length() > this.firstPoolReseedLevel()) {
 				this.reseed();
 			}
 		}
+		
 	},
 
 	//-------------------------------------------------------------------------
@@ -831,8 +842,8 @@ Clipperz.Crypto.PRNG.defaultRandomGenerator = function() {
 		//.............................................................
 		{
 			var newRandomnessSource;
-			//newRandomnessSource = new Clipperz.Crypto.PRNG.TimeRandomnessSource({intervalTime:111});
-			newRandomnessSource = new Clipperz.Crypto.PRNG.TimeRandomnessSource({intervalTime:100});
+			newRandomnessSource = new Clipperz.Crypto.PRNG.TimeRandomnessSource({intervalTime:111});
+			//newRandomnessSource = new Clipperz.Crypto.PRNG.TimeRandomnessSource({intervalTime:10});
 			_clipperz_crypt_prng_defaultPRNG.addRandomnessSource(newRandomnessSource);
 		}
 
