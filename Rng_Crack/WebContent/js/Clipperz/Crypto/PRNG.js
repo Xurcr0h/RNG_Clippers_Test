@@ -519,12 +519,14 @@ Clipperz.Crypto.PRNG.Fortuna.prototype = MochiKit.Base.update(null, {
 			}
 		}
 		
+		// Showing Seed Values
+		document.getElementById("Valuesusedtoseed").innerHTML=newKeySeed._value.join();
+		
 		this.setKey(Clipperz.Crypto.SHA.sha_d256(newKeySeed));
 		if (reseedCounter == 1) {
 //MochiKit.Logging.logDebug("### PRNG.readyToGenerateRandomBytes");
 Clipperz.log("### PRNG.readyToGenerateRandomBytes");
 			MochiKit.Signal.signal(this, 'readyToGenerateRandomBytes');
-			document.getElementById("Valuesusedtoseed").innerHTML=newKeySeed._value.join();
 			Clipperz.log(newKeySeed);
 		}
 		MochiKit.Signal.signal(this, 'reseeded');
